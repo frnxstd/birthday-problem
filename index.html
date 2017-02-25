@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Probability Calculator</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h1>Probability Calculator</h1>
+            <p class="lead">Calculates the probability of more than one coincidence of birthdays in a group of "n" people.</p>
+        </div>
+        <div class="col-md-3 col-md-offset-5 col-sm-4 col-sm-offset-4 col-xs-8 col-xs-offset-2 text-center">
+            <small>Number of people in group</small>
+            <input type="number" class="form-control" placeholder="n" id="n">
+            <h1><span id="result">0</span><span>%</span></h1>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $("#n").on("keyup keydown change",function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+
+            var result = Math.pow((1/365), parseInt($(this).val()));
+
+            for(days = 365; days > (365 - $(this).val()); days--)
+            {
+                result = result * days;
+            }
+
+            result = 1 - result;
+            result = result * 100;
+            result = Math.round(result * 100) / 100;
+
+            if(!$.isNumeric(result))
+            {
+                result = 0;
+            }
+
+            $("#result").text(result);
+        });
+    });
+</script>
+</body>
+</html>
